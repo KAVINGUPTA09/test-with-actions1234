@@ -1,70 +1,36 @@
-# System Modules
 import sys
 import os
-
-# Installed Modules
+import math
 import pytest
 
-# Project Modules
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
-from calculations import area_of_circle, get_nth_fibonacci   # noqa: E402
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from src import calculations
 
 
-def test_area_of_circle_positive_radius():
-    """Test with a positive radius."""
-    # Arrange
-    radius = 1
-
-    # Act
-    result = area_of_circle(radius)
-
-    # Assert
-    assert abs(result - 3.14159) < 1e-5
+def test_area_of_circle():
+    assert calculations.area_of_circle(0) == 0
+    assert calculations.area_of_circle(1) == math.pi
+    assert calculations.area_of_circle(2) == math.pi * 4
 
 
-def test_area_of_circle_zero_radius():
-    """Test with a radius of zero."""
-    # Arrange
-    radius = 0
-
-    # Act
-    result = area_of_circle(radius)
-
-    # Assert
-    assert result == 0
+def test_area_of_circle_negative():
+    with pytest.raises(ValueError):
+        calculations.area_of_circle(-1)
 
 
-def test_get_nth_fibonacci_zero():
-    """Test with n=0."""
-    # Arrange
-    n = 0
-
-    # Act
-    result = get_nth_fibonacci(n)
-
-    # Assert
-    assert result == 0
+def test_get_nth_fibonacci_negative():
+    with pytest.raises(ValueError):
+        calculations.get_nth_fibonacci(-5)
 
 
-def test_get_nth_fibonacci_one():
-    """Test with n=1."""
-    # Arrange
-    n = 1
-
-    # Act
-    result = get_nth_fibonacci(n)
-
-    # Assert
-    assert result == 1
+def test_get_nth_fibonacci_base_cases():
+    assert calculations.get_nth_fibonacci(0) == 0
+    assert calculations.get_nth_fibonacci(1) == 1
 
 
-# def test_get_nth_fibonacci_ten():
-#     """Test with n=10."""
-#     # Arrange
-#     n = 10
-
-#     # Act
-#     result = get_nth_fibonacci(n)
-
-#     # Assert
-#     assert result == 89
+def test_get_nth_fibonacci_sequence():
+    assert calculations.get_nth_fibonacci(2) == 1
+    assert calculations.get_nth_fibonacci(3) == 2
+    assert calculations.get_nth_fibonacci(4) == 3
+    assert calculations.get_nth_fibonacci(5) == 5
+    assert calculations.get_nth_fibonacci(6) == 8
